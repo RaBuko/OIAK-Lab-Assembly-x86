@@ -1,0 +1,6 @@
+Zaimplementować funkcję obliczającą długość łuku krzywej funkcji sin(x)
+w zadanych przedziałach.
+- wczytanie danych,- granic przedziałów funkcja w C
+- wypisanie wyniku - funkcja w C
+- algorytm + główny program (main) - asm (x87)
+- implementacja SSE/avx - opcja bonus

@@ -1,0 +1,14 @@
+1. Wczytać liczbę ze stand. wejścia, zamienić na syst o B = 2
+    i wypisać na stand. wyjście w postaci szesnastkowej. Uzyć
+    schematu Hornera. Przedstawić przejrzyście sposób obliczania
+    , także na przykładzie (schemat blokowy można przedstawić jak działa)
+2a. Wczytać ze stand. wejścia liczbę szesnastkową, wypisać na stand.
+    wyjście w postaci B = 10 z użyciem f. printf, kompilacja z użyciem gcc
+2b. Zdefiniować funkcję (w asm) dodającą dowolną liczbę operandów.
+    Funkcję użyć z poziomu programu w C. Zdefiniować i wykrywać ramkę
+    stosu na zmienne lokalne
+
+Programy 2a i 2b zaimplementować dla 2 konwnecji
+wywołań x64 i x86 (32 - 64bity)
+Omówić i przedstawić na przykładzie
+Pomoc naukowa: gcc -S

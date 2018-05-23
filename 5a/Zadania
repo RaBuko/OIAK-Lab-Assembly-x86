@@ -1,0 +1,21 @@
+Temat: Firmware Update/Shellcode/plugin
+
+1. Zaimplementować dynamiczne ładowanie modułu programu:
+    1. definicja programu w pliku binarnym (np. drukowanie "Hello World")
+    2. plik ładowany do pamięci ze std. wejścia lub przez otwarcie (odczyt) i wykonujemy
+    2. plik ładowany do pamięci ze std. wejścia lub przez otwarcie (odczyt) i wykonujemy
+    3. po wykonaniu pliku  powrót do programu
+    4. obszar pamięci docelowej: ustalić, do której sekcji można pisać z
+    której można wykonywac kod: .text, .data .bss .stack
+2. Zaimplementować funkcję ładowaną dynamicznie z wykorzystaniem funkcji dlopen()
+
+Uwagi:
+- Zaimplementowanie opisać w sprawozdaniu
+- przedstawić mapy pamięci i podać przedziały obszaru
+- jeżeli czegoś się nie da zrobić, pokaż odwołanie do literatury
+
+Dodatkowe
+Pisząc program w asemblerze wytwarzany jest obszar pamięci
+Wziąć kawałek pamięci (przedział adresów który trzeba przydzielić), kawałek pamięci
+zeby nie byl tworzony statycznie, tylko zeby przez nas zostalz aczytany do pamieci
+poza programem.

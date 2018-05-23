@@ -1,0 +1,18 @@
+SHELL CODE
+
+Uzyc funkcji fscanf do przepelnienia bufora wlasnym kodem, kod wczytany wykonac
+a) nadpisanie adresu powrotu albo adresu funkcji w zmiennej
+    gdy kod funkcji wykona ret
+b) nadpisanie kodu z wykorzystaniem zmiennej zdefiniowanej w segmencie .text
+    Zdefiniowanie zmiennej typu void(*func)(void)
+    Trzeba cos przypisac func =
+    void myfunc() {} <- w ten sposob mamy adres funkcji
+    func = (void*)myfunc
+c) tab: .space 20
+    fun: nop
+
+
+HEXDUMP
+OBJDUMP
+
+objcopy -O binary plik_wykonywany.o plik_wyjsciowy
