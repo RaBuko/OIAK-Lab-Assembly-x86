@@ -1,18 +1,28 @@
 .data
-format_d: .ascii "%d"
+format_d: .ascii "%d\0"
+format_f: .ascii "%f\0"
 
 lower_message: .ascii "Podaj dolny przedzial: \0"
 upper_message: .ascii "Podaj gorny przedzial: \0"
 bounds_message: .ascii "Wybrany przedzial to: \0"
-theta = 2
+
+differ: .double 0.1
+.space 1
+input: .float 3.14
+output: .float 0
+length: .float 0
+
+c_w_precision_double_extended:
+	.word 0x037f
 
 .bss
-    .comm lower_bound, 10
-    .comm upper_bound, 10
-    .comm parts_number, 10
+    .comm lower_bound, 4
+    .comm upper_bound, 4
+    .comm parts_number, 4
+    .comm answer, 4
 
 .text
-   .globl main # punkt wejscia do programu
+   .globl main
 
 main:
     call loadData
@@ -20,11 +30,20 @@ main:
     call endprogram
 
 alg:
-    push (lower_bound)
     finit
-    fsin
-    pop %rax
-    ret
+    flds input
+    fcos
+    fsts output
+    call printfloat
+br:
+ret
+
+printfloat:
+    mov $0, %rax
+    mov $differ, %rdi
+    mov $format_f, %rsi
+    call printf
+ret
 
 loadData:
     mov $0, %rax
@@ -32,7 +51,7 @@ loadData:
     call printf
 
     mov $0, %rax
-    mov $format_d, %rdi
+    mov $format_d, %rdi 
     mov $lower_bound, %rsi
     call scanf
 
@@ -44,7 +63,7 @@ loadData:
     mov $format_d, %rdi
     mov $upper_bound, %rsi
     call scanf
-    ret
+ret
 
 endprogram:
     mov $0, %rax
