@@ -1,69 +1,98 @@
 .data
-format_d: .ascii "%d\0"
-format_f: .ascii "%f\0"
 
-lower_message: .ascii "Podaj dolny przedzial: \0"
-upper_message: .ascii "Podaj gorny przedzial: \0"
-bounds_message: .ascii "Wybrany przedzial to: \0"
+format_f:           .ascii "%f\0"
 
-differ: .double 0.1
-.space 1
-input: .float 3.14
-output: .float 0
-length: .float 0
+start_value_info:   .ascii "Podaj dolny przedzial: \0"
+max_value_info:     .ascii "Podaj gorny przedzial: \0"
+new_line:           .ascii "\n\0"
 
-c_w_precision_double_extended:
-	.word 0x037f
-
-.bss
-    .comm lower_bound, 4
-    .comm upper_bound, 4
-    .comm parts_number, 4
-    .comm answer, 4
+maxvalue:           .float 1.000    # górny przedział
+sum:                .float 0.000    # suma długości łuku
+differ:             .float 0.001    # przedział
+a_x:                .float 0.000    # aktualnie badana wsp. x
+a_y:                .float 0.000    # aktualnie badana wsp. y
+b_x:                .float 0.000    # poprzednia badana wsp. x
+b_y:                .float 0.000    # poprzednia badana wsp. y
+a:                  .float 0.000    # roznica x-ow
+b:                  .float 0.000    # roznica y-ow
 
 .text
    .globl main
 
 main:
-    call loadData
-    call alg
-    call endprogram
+    call loadData   # funkcja wczytująca przedzialy
+    call algorithm  # wykonanie calego algorytmu
+    call endprogram # zakonczenie programu
 
-alg:
+algorithm:
+    call setpositions # funkcja ustawiajaca zmienne pozycji
+    call calcsin      # funkcja obliczajaca sinus dla danego x
+    call calc_dist    
+    flds maxvalue
+    fcom a_x
+    fnstsw  # przeniesienie flag FPU
+    sahf    # przyjecie tych flag jako flagi procesora (potrzebne do skokow)
+    jnb alg
+    ret
+
+calc_dist:
     finit
-    flds input
-    fcos
-    fsts output
-    call printfloat
-br:
-ret
+    flds a_x
+    fsub b_x 
+    fsts a
+    fmul a
+    fsts a
 
-printfloat:
-    mov $0, %rax
-    mov $differ, %rdi
-    mov $format_f, %rsi
-    call printf
-ret
+    finit
+    flds a_y
+    fsub b_y
+    fsts b
+    fmul b
+    fsts b
+    
+    finit
+    flds a
+    fadd b
+    fsqrt
+    fadd sum
+    fsts sum
+
+    ret
+
+setpositions:
+    mov a_x, %rax
+    mov %rax, b_x
+    mov a_y, %rax
+    mov %rax, b_y
+
+    finit
+    flds a_x
+    fadd differ
+    fsts a_x
+    ret
+
+calcsin:
+    finit
+    flds a_x
+    fsin
+    fsts a_y
+    ret
 
 loadData:
-    mov $0, %rax
-    mov $lower_message, %rdi
+    mov $start_value_info, %rdi
     call printf
 
-    mov $0, %rax
-    mov $format_d, %rdi 
-    mov $lower_bound, %rsi
+    mov $format_f, %rdi 
+    mov $a_x, %rsi
     call scanf
 
-    mov $0, %rax
-    mov $upper_message, %rdi
+    mov $max_value_info, %rdi
     call printf
 
-    mov $0, %rax
-    mov $format_d, %rdi
-    mov $upper_bound, %rsi
+    mov $format_f, %rdi
+    mov $maxvalue, %rsi
     call scanf
-ret
+    ret
 
 endprogram:
     mov $0, %rax
